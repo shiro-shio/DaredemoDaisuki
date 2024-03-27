@@ -51,6 +51,7 @@ function addPanel() {
       newchatFrame.style.width = '300px';
       newchatFrame.style.height = '100%';
       newchatFrame.style.border = 'none';
+      newchatFrame.style.display = 'none';
       newPanel.appendChild(newchatFrame);
 
       const newFrame = document.createElement('iframe');

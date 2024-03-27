@@ -48,6 +48,7 @@ function addPanel() {
 
       const newchatFrame = document.createElement('iframe');
       newchatFrame.src = chaturl;
+      newchatFrame.className = 'msg'
       newchatFrame.style.width = '300px';
       newchatFrame.style.height = '100%';
       newchatFrame.style.border = 'none';
@@ -156,16 +157,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function toggleLayout() {
-    const frames = document.querySelectorAll('iframe');
-    frames.forEach(frame => {
+  const frames = document.querySelectorAll('iframe');
+  frames.forEach(frame => {
+    if (!frame.classList.contains('msg')) {
       if (layoutToggled) {
         frame.style.display = 'block';
       } else {
         frame.style.display = 'none';
       }
-    });
-    layoutToggled = !layoutToggled;
-  }
+    }
+  });
+  layoutToggled = !layoutToggled;
+}
 
   document.getElementById('toggleButton').addEventListener('click', toggleLayout);
 

@@ -10,7 +10,7 @@ function addPanel() {
       newPanel.style.display = 'flex';
       newPanel.style.flexDirection = 'row-reverse';
       newPanel.style.alignItems = 'flex-end';
-      newPanel.style.width = 'calc(640px + 300px)';
+      newPanel.style.width = 'calc(640px + 0px)';
       newPanel.style.height = '360px';
       newPanel.style.position = 'absolute';
       newPanel.id = 'panel' + panelCount;
@@ -49,7 +49,7 @@ function addPanel() {
       const newchatFrame = document.createElement('iframe');
       newchatFrame.src = chaturl;
       newchatFrame.className = 'msg'
-      newchatFrame.style.width = 'calc(0% + 300px)';
+      newchatFrame.style.width = 'calc(0% + 0px)';
       newchatFrame.style.height = '100%';
       newchatFrame.style.border = 'none';
       newchatFrame.style.display = 'none';
@@ -57,7 +57,7 @@ function addPanel() {
 
       const newFrame = document.createElement('iframe');
       newFrame.src = url;
-      newFrame.style.width = 'calc(100% - 300px)';
+      newFrame.style.width = 'calc(100% - 0px)';
       newFrame.style.height = '100%';
       newFrame.style.border = 'none';
       newPanel.appendChild(newFrame);
@@ -66,7 +66,7 @@ function addPanel() {
         let isDragging = true;
         let startX = e.clientX;
         let startY = e.clientY;
-        let startWidth = parseInt(window.getComputedStyle(newPanel).width)-300;
+        let startWidth = parseInt(window.getComputedStyle(newPanel).width)-0;
         let startHeight = parseInt(window.getComputedStyle(newPanel).height);
         function handleMouseMove(event) {
           if (isDragging) {
@@ -80,7 +80,7 @@ function addPanel() {
             const snappedHeight = Math.round(newHeight / snapThreshold) * snapThreshold;
         
             if (Math.abs(diffX) > Math.abs(diffY)) {
-              newPanel.style.width = `calc(${snappedWidth}px + 300px)`;
+              newPanel.style.width = `calc(${snappedWidth}px + 0px)`;
               newPanel.style.height = Math.floor(snappedWidth / aspectRatio) + 'px';
             } else {
               newPanel.style.height = snappedHeight + 'px';

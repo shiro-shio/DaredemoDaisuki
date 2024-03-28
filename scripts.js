@@ -1,5 +1,6 @@
 let panelCount = 0;
 let layoutToggled = false;
+let isHeightLarger
 
 function addPanel() {
     panelCount++;
@@ -10,7 +11,7 @@ function addPanel() {
       newPanel.style.display = 'flex';
       newPanel.style.flexDirection = 'row-reverse';
       newPanel.style.alignItems = 'flex-end';
-      newPanel.style.width = 'calc(640px + 0px)';
+      newPanel.style.width = 'calc(640px + 300px)';
       newPanel.style.height = '360px';
       newPanel.style.position = 'absolute';
       newPanel.id = 'panel' + panelCount;
@@ -27,8 +28,8 @@ function addPanel() {
       newSwitch.addEventListener('dblclick', () => {
         const originalWidth = newPanel.style.width;
         const originalHeight = newPanel.style.height;
-        newPanel.style.width = originalHeight;
-        newPanel.style.height = originalWidth;
+        newPanel.style.width = `calc(${originalHeight} + 300px)`
+        newPanel.style.height = `calc(${originalWidth} - 300px)`
       });
       
       const newdel = document.createElement('button');
@@ -49,15 +50,15 @@ function addPanel() {
       const newchatFrame = document.createElement('iframe');
       newchatFrame.src = chaturl;
       newchatFrame.className = 'msg'
-      newchatFrame.style.width = 'calc(0% + 0px)';
+      newchatFrame.style.width = 'calc(0% + 300px)';
       newchatFrame.style.height = '100%';
       newchatFrame.style.border = 'none';
-      newchatFrame.style.display = 'none';
+      newchatFrame.style.display = 'block';
       newPanel.appendChild(newchatFrame);
 
       const newFrame = document.createElement('iframe');
       newFrame.src = url;
-      newFrame.style.width = 'calc(100% - 0px)';
+      newFrame.style.width = 'calc(100% - 300px)';
       newFrame.style.height = '100%';
       newFrame.style.border = 'none';
       newPanel.appendChild(newFrame);
@@ -66,7 +67,7 @@ function addPanel() {
         let isDragging = true;
         let startX = e.clientX;
         let startY = e.clientY;
-        let startWidth = parseInt(window.getComputedStyle(newPanel).width)-0;
+        let startWidth = parseInt(window.getComputedStyle(newPanel).width) -300;
         let startHeight = parseInt(window.getComputedStyle(newPanel).height);
         function handleMouseMove(event) {
           if (isDragging) {
@@ -78,13 +79,13 @@ function addPanel() {
             const snapThreshold = 10;
             const snappedWidth = Math.round(newWidth / snapThreshold) * snapThreshold;
             const snappedHeight = Math.round(newHeight / snapThreshold) * snapThreshold;
-        
+
             if (Math.abs(diffX) > Math.abs(diffY)) {
-              newPanel.style.width = `calc(${snappedWidth}px + 0px)`;
+              newPanel.style.width = `calc(${snappedWidth}px + 300px)`;
               newPanel.style.height = Math.floor(snappedWidth / aspectRatio) + 'px';
             } else {
               newPanel.style.height = snappedHeight + 'px';
-              newPanel.style.width = Math.floor(snappedHeight * aspectRatio) + 'px';
+              newPanel.style.width = Math.floor(snappedHeight * aspectRatio) + 300 + 'px';
             }
           }
         }

@@ -118,3 +118,14 @@ body {
     max-width: 100%;
     max-height: 100%;
 }
+
+.switch:active {
+    width: 100px;
+    height: 100px;
+}
+
+.switch:focus {
+    width: 25px;
+    height: 25px;
+    outline: none;
+}

@@ -10,7 +10,7 @@ function addPanel() {
       newPanel.style.display = 'flex';
       newPanel.style.flexDirection = 'row-reverse';
       newPanel.style.alignItems = 'flex-end';
-      newPanel.style.width = '640px';
+      newPanel.style.width = 'calc(640px + 300px)';
       newPanel.style.height = '360px';
       newPanel.style.position = 'absolute';
       newPanel.id = 'panel' + panelCount;
@@ -49,15 +49,15 @@ function addPanel() {
       const newchatFrame = document.createElement('iframe');
       newchatFrame.src = chaturl;
       newchatFrame.className = 'msg'
-      newchatFrame.style.width = '300px';
+      newchatFrame.style.width = 'calc(0% + 300px)';
       newchatFrame.style.height = '100%';
       newchatFrame.style.border = 'none';
-      newchatFrame.style.display = 'none';
+      newchatFrame.style.display = 'block';
       newPanel.appendChild(newchatFrame);
 
       const newFrame = document.createElement('iframe');
       newFrame.src = url;
-      newFrame.style.width = '100%';
+      newFrame.style.width = 'calc(100% - 300px)';
       newFrame.style.height = '100%';
       newFrame.style.border = 'none';
       newPanel.appendChild(newFrame);
@@ -66,19 +66,25 @@ function addPanel() {
         let isDragging = true;
         let startX = e.clientX;
         let startY = e.clientY;
-        let startWidth = parseInt(window.getComputedStyle(newPanel).width);
+        let startWidth = parseInt(window.getComputedStyle(newPanel).width)-300;
         let startHeight = parseInt(window.getComputedStyle(newPanel).height);
         function handleMouseMove(event) {
           if (isDragging) {
             const diffX = event.clientX - startX;
             const diffY = event.clientY - startY;
             const aspectRatio = startWidth / startHeight;
+            let newWidth = startWidth + diffX;
+            let newHeight = startHeight + diffY;
+            const snapThreshold = 10;
+            const snappedWidth = Math.round(newWidth / snapThreshold) * snapThreshold;
+            const snappedHeight = Math.round(newHeight / snapThreshold) * snapThreshold;
+        
             if (Math.abs(diffX) > Math.abs(diffY)) {
-              newPanel.style.width = startWidth + diffX + 'px';
-              newPanel.style.height = (startWidth + diffX) / aspectRatio + 'px';
+              newPanel.style.width = `calc(${snappedWidth}px + 300px)`;
+              newPanel.style.height = Math.floor(snappedWidth / aspectRatio) + 'px';
             } else {
-              newPanel.style.height = startHeight + diffY + 'px';
-              newPanel.style.width = (startHeight + diffY) * aspectRatio + 'px';
+              newPanel.style.height = snappedHeight + 'px';
+              newPanel.style.width = Math.floor(snappedHeight * aspectRatio) + 'px';
             }
           }
         }
@@ -125,6 +131,31 @@ function adjustPanelWidths() {
   });
 }
 
+//document.addEventListener('DOMContentLoaded', () => {
+//  const container = document.getElementById('container');
+//  container.addEventListener('mousedown', (e) => {
+//    if (e.target.classList.contains('panel')) {
+//      const panel = e.target;
+//      const panelRect = panel.getBoundingClientRect();
+//      const startX = e.clientX;
+//      const startY = e.clientY;
+//      function handleMouseMove(event) {
+//        const diffX = event.clientX - startX;
+//        const diffY = event.clientY - startY;
+//        panel.style.left = Math.max(panelRect.x + diffX,1) + 'px';
+//        panel.style.top = Math.max(panelRect.y + diffY,100) + 'px';
+//      }
+//      function handleMouseUp() {
+//        document.removeEventListener('mousemove', handleMouseMove);
+//        document.removeEventListener('mouseup', handleMouseUp);
+//      }
+//
+//      document.addEventListener('mousemove', handleMouseMove);
+//      document.addEventListener('mouseup', handleMouseUp);
+//    }
+//  });
+//});
+
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('container');
   container.addEventListener('mousedown', (e) => {
@@ -133,12 +164,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const panelRect = panel.getBoundingClientRect();
       const startX = e.clientX;
       const startY = e.clientY;
+      const snapThreshold = 5; // 調整對齊閾值
 
       function handleMouseMove(event) {
         const diffX = event.clientX - startX;
         const diffY = event.clientY - startY;
-        panel.style.left = Math.max(panelRect.x + diffX,1) + 'px';
-        panel.style.top = Math.max(panelRect.y + diffY,100) + 'px';
+        const newX = panelRect.left + diffX;
+        const newY = panelRect.top + diffY;
+        const snappedX = Math.round(newX / snapThreshold) * snapThreshold;
+        const snappedY = Math.round(newY / snapThreshold) * snapThreshold;
+        panel.style.left = Math.max(snappedX,0) + 'px';
+        panel.style.top = Math.max(snappedY,100) + 'px';
       }
 
       function handleMouseUp() {
@@ -151,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-
 
 
 

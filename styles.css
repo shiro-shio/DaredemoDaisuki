@@ -124,7 +124,7 @@ body {
     height: 100px;
 }
 
-.switch:focus {
+.switch:focus-visible {
     width: 25px;
     height: 25px;
     outline: none;
